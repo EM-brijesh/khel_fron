@@ -36,4 +36,23 @@ export const eventsService = {
 
     return response.json();
   },
+
+  async joinEvent(eventname: string, count: number): Promise<any> {
+    const token = localStorage.getItem('token');
+    const response = await fetch(`${API_URL}/joinevent`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${token}`,
+      },
+      body: JSON.stringify({ name:eventname, count }),
+    });
+
+    if (!response.ok) {
+      const errorData = await response.json().catch(() => ({}));
+      throw new Error(errorData.message || 'Failed to join the event');
+    }
+
+    return response.json(); // Assuming the backend returns the updated event or success message
+  },
 };
