@@ -1,8 +1,10 @@
 import React, { useState } from 'react';
 import { Header } from '../components/Header';
-import { ArrowLeft, Loader2 } from 'lucide-react';
+import { ArrowLeft } from 'lucide-react';
 import { Link, useNavigate } from 'react-router-dom';
 import { authService } from '../services/authservice';
+import { AuthForm } from '../components/auth/Authform';
+
 
 export const Auth = () => {
   const navigate = useNavigate();
@@ -13,6 +15,7 @@ export const Auth = () => {
   const [formData, setFormData] = useState({
     username: '',
     password: '',
+    location: '',
   });
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -33,8 +36,10 @@ export const Auth = () => {
 
     try {
       if (isSignIn) {
-        await authService.login(formData);
-        navigate('/dashboard');
+        const response = await authService.login(formData);
+        if (response.token) {
+          navigate('/dashboard');
+        }
       } else {
         await authService.register(formData);
         setSuccessMessage('Registration successful! Please sign in with your credentials.');
@@ -43,6 +48,7 @@ export const Auth = () => {
           setFormData({
             username: '',
             password: '',
+            location: '',
           });
         }, 1500);
       }
@@ -58,6 +64,7 @@ export const Auth = () => {
     setFormData({
       username: '',
       password: '',
+      location: '',
     });
     setError(null);
     setSuccessMessage(null);
@@ -85,52 +92,13 @@ export const Auth = () => {
               {successMessage}
             </div>
           )}
-          <form className="space-y-4" onSubmit={handleSubmit}>
-            <div>
-              <label htmlFor="username" className="block text-sm font-medium text-gray-700">
-                Username
-              </label>
-              <input
-                type="text"
-                id="username"
-                name="username"
-                value={formData.username}
-                onChange={handleInputChange}
-                className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
-                required
-                disabled={isLoading}
-              />
-            </div>
-            <div>
-              <label htmlFor="password" className="block text-sm font-medium text-gray-700">
-                Password
-              </label>
-              <input
-                type="password"
-                id="password"
-                name="password"
-                value={formData.password}
-                onChange={handleInputChange}
-                className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
-                required
-                disabled={isLoading}
-              />
-            </div>
-            <button
-              type="submit"
-              disabled={isLoading}
-              className="w-full bg-indigo-600 text-white py-2 px-4 rounded-md hover:bg-indigo-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center"
-            >
-              {isLoading ? (
-                <>
-                  <Loader2 size={20} className="animate-spin mr-2" />
-                  Processing...
-                </>
-              ) : (
-                isSignIn ? 'Sign In' : 'Sign Up'
-              )}
-            </button>
-          </form>
+          <AuthForm
+            isSignIn={isSignIn}
+            isLoading={isLoading}
+            formData={formData}
+            onChange={handleInputChange}
+            onSubmit={handleSubmit}
+          />
           <div className="mt-4 text-center">
             <span className="text-sm text-gray-600">
               {isSignIn ? "Don't have an account? " : "Already have an account? "}
@@ -147,4 +115,4 @@ export const Auth = () => {
       </div>
     </div>
   );
-}
+};

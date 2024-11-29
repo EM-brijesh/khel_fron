@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Header } from '../components/Header';
 import { EventList } from '../components/EventList';
+import { ProfileWidget } from '../components/ProfileWidget';
 import { Plus, Share, Loader2 } from 'lucide-react';
 import { eventsService } from '../services/eventservice';
 
@@ -57,7 +58,7 @@ export const Dashboard = () => {
       <Header />
       <div className="max-w-7xl mx-auto px-4 py-8 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center mb-8">
-          <h1 className="text-3xl font-bold text-gray-900">Khel Happening around you !</h1>
+          <h1 className="text-3xl font-bold text-gray-900">Sports Events</h1>
           <div className="flex gap-4">
             <button
               onClick={() => setShowModal(true)}
@@ -74,6 +75,7 @@ export const Dashboard = () => {
         </div>
 
         <EventList refreshTrigger={refreshTrigger} />
+        <ProfileWidget />
 
         {showModal && (
           <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50">
