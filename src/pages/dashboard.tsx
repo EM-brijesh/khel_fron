@@ -44,7 +44,6 @@ export const Dashboard = () => {
         count: '',
         time: '',
       });
-      // Trigger a refresh of the event list
       setRefreshTrigger(prev => prev + 1);
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Failed to create event. Please try again.');
@@ -164,5 +163,4 @@ export const Dashboard = () => {
     </div>
   );
 };
-
 export default Dashboard;

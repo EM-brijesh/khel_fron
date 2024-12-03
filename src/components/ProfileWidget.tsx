@@ -7,21 +7,20 @@ import { authService } from '../services/authservice';
 export const ProfileWidget: React.FC = () => {
   const [isOpen, setIsOpen] = useState(false);
   const navigate = useNavigate();
+  const userInfo = authService.getUserInfo();
 
   const handleLogout = () => {
     authService.logout();
     navigate('/auth');
   };
 
-  const { username, location } = authService.getUserInfo();
-
   return (
     <div className="fixed bottom-8 right-8">
       <ProfileButton onClick={() => setIsOpen(true)} />
       {isOpen && (
         <ProfilePopup
-          username={username || 'User'}
-          location={location || 'Not specified'}
+          username={userInfo.username || 'User'}
+          location={userInfo.location || 'Not specified'}
           onClose={() => setIsOpen(false)}
           onLogout={handleLogout}
         />

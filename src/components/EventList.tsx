@@ -1,38 +1,46 @@
 import React, { useEffect, useState } from 'react';
-import { EventCard } from './Card';
 import { Event } from '../types';
-import { eventsService } from '../services/eventservice';
+import { EventCard } from './Card';
 import { Loader2 } from 'lucide-react';
+import { eventsService } from '../services/eventservice';
 
 interface EventListProps {
   refreshTrigger?: number;
+  events?: Event[];
+  title?: string;
 }
 
-export const EventList = ({ refreshTrigger = 0 }: EventListProps) => {
+export const EventList: React.FC<EventListProps> = ({ refreshTrigger = 0, events: propEvents, title }) => {
   const [events, setEvents] = useState<Event[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
-  useEffect(() => {
-    const fetchEvents = async () => {
-      try {
-        setLoading(true);
-        const data = await eventsService.getEvents();
-        setEvents(data);
-        setError(null);
-      } catch (err) {
-        setError('Failed to load events. Please try again later.');
-      } finally {
-        setLoading(false);
-      }
-    };
+  const fetchEvents = async () => {
+    if (propEvents) {
+      setEvents(propEvents);
+      setLoading(false);
+      return;
+    }
 
+    try {
+      setLoading(true);
+      const data = await eventsService.getEvents();
+      setEvents(data);
+      setError(null);
+    } catch (err) {
+      setError(err instanceof Error ? err.message : 'Failed to load events');
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
     fetchEvents();
-  }, [refreshTrigger]);
+  }, [refreshTrigger, propEvents]);
 
   if (loading) {
     return (
-      <div className="flex justify-center items-center py-12">
+      <div className="flex justify-center items-center py-8">
         <Loader2 className="w-8 h-8 animate-spin text-indigo-600" />
       </div>
     );
@@ -40,25 +48,32 @@ export const EventList = ({ refreshTrigger = 0 }: EventListProps) => {
 
   if (error) {
     return (
-      <div className="text-center py-12">
-        <p className="text-red-600">{error}</p>
+      <div className="bg-red-50 border border-red-200 rounded-lg p-4 text-red-700">
+        {error}
       </div>
     );
   }
 
   if (events.length === 0) {
     return (
-      <div className="text-center py-12">
-        <p className="text-gray-600">No events found. Create one to get started!</p>
+      <div className="text-center py-8 text-gray-500">
+        {title ? `No ${title.toLowerCase()} found.` : 'No events found in your area.'}
       </div>
     );
   }
 
   return (
-    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-      {events.map((event) => (
-        <EventCard key={event._id} event={event} />
-      ))}
+    <div>
+      {title && <h2 className="text-2xl font-bold text-gray-900 mb-4">{title}</h2>}
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        {events.map((event) => (
+          <EventCard 
+            key={event._id} 
+            event={event}
+            onRefresh={fetchEvents}
+          />
+        ))}
+      </div>
     </div>
   );
 }

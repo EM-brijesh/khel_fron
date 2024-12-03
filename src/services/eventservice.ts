@@ -5,14 +5,20 @@ const API_URL = 'http://localhost:3000/api';
 export const eventsService = {
   async getEvents(): Promise<Event[]> {
     const token = localStorage.getItem('token');
-    const response = await fetch(`${API_URL}/getallevents`, {
+    if (!token) {
+      throw new Error('Authentication required');
+    }
+
+    const response = await fetch(`${API_URL}/nearbyevents`, {
       headers: {
         'Authorization': `Bearer ${token}`,
+        'Content-Type': 'application/json'
       },
     });
 
     if (!response.ok) {
-      throw new Error('Failed to fetch events');
+      const errorData = await response.json().catch(() => ({}));
+      throw new Error(errorData.message || 'Failed to fetch events');
     }
 
     return response.json();
@@ -20,6 +26,10 @@ export const eventsService = {
 
   async createEvent(eventData: Omit<Event, '_id' | 'userId' | 'participants'>): Promise<Event> {
     const token = localStorage.getItem('token');
+    if (!token) {
+      throw new Error('Authentication required');
+    }
+
     const response = await fetch(`${API_URL}/addevent`, {
       method: 'POST',
       headers: {
@@ -37,22 +47,27 @@ export const eventsService = {
     return response.json();
   },
 
-  async joinEvent(eventname: string, count: number): Promise<any> {
+  async joinEvent(eventname: string, count: number): Promise<void> {
     const token = localStorage.getItem('token');
+    if (!token) {
+      throw new Error('Authentication required');
+    }
+
     const response = await fetch(`${API_URL}/joinevent`, {
       method: 'POST',
       headers: {
-        'Content-Type': 'application/json',
         'Authorization': `Bearer ${token}`,
+        'Content-Type': 'application/json'
       },
-      body: JSON.stringify({ name:eventname, count }),
+      body: JSON.stringify({
+        name: eventname,
+        count: count
+      })
     });
 
     if (!response.ok) {
-      const errorData = await response.json().catch(() => ({}));
-      throw new Error(errorData.message || 'Failed to join the event');
+      const errorData = await response.json();
+      throw new Error(errorData.message || 'Failed to join event');
     }
-
-    return response.json(); // Assuming the backend returns the updated event or success message
-  },
+  }
 };

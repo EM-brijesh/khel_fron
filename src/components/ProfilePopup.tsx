@@ -1,5 +1,6 @@
 import React, { useRef, useEffect } from 'react';
-import { X, MapPin, LogOut } from 'lucide-react';
+import { X, MapPin, LogOut, User, Settings } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
 
 interface ProfilePopupProps {
   username: string;
@@ -14,6 +15,7 @@ export const ProfilePopup: React.FC<ProfilePopupProps> = ({
   onClose,
   onLogout,
 }) => {
+  const navigate = useNavigate();
   const popupRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -26,6 +28,16 @@ export const ProfilePopup: React.FC<ProfilePopupProps> = ({
     document.addEventListener('mousedown', handleClickOutside);
     return () => document.removeEventListener('mousedown', handleClickOutside);
   }, [onClose]);
+
+  const handleViewProfile = () => {
+    navigate('/profile');
+    onClose();
+  };
+
+  const handleSettings = () => {
+    navigate('/settings');
+    onClose();
+  };
 
   return (
     <div
@@ -50,10 +62,24 @@ export const ProfilePopup: React.FC<ProfilePopupProps> = ({
           </button>
         </div>
         
-        <div className="border-t border-gray-100 pt-3">
+        <div className="border-t border-gray-100 pt-3 space-y-2">
+          <button
+            onClick={handleViewProfile}
+            className="w-full flex items-center gap-2 px-4 py-2 text-gray-700 hover:bg-gray-50 rounded-md transition-colors"
+          >
+            <User size={16} />
+            <span>View Profile</span>
+          </button>
+          <button
+            onClick={handleSettings}
+            className="w-full flex items-center gap-2 px-4 py-2 text-gray-700 hover:bg-gray-50 rounded-md transition-colors"
+          >
+            <Settings size={16} />
+            <span>Settings</span>
+          </button>
           <button
             onClick={onLogout}
-            className="w-full flex items-center justify-center gap-2 px-4 py-2 text-red-600 hover:bg-red-50 rounded-md transition-colors"
+            className="w-full flex items-center gap-2 px-4 py-2 text-red-600 hover:bg-red-50 rounded-md transition-colors"
           >
             <LogOut size={16} />
             <span>Sign Out</span>
