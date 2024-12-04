@@ -24,3 +24,16 @@ export interface UserInfo {
   username: string | null;
   location: string | null;
 }
+
+export interface ShareResponse {
+  [x: string]: any;
+  message: string;
+  event: {
+    eventId: string;
+    eventname: string;
+    location: string;
+    time: string;
+    remainingSpots: number;
+  };
+  shareLink: string;
+}

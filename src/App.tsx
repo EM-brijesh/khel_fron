@@ -3,6 +3,7 @@ import { Home } from './pages/home';
 import { Auth } from './pages/auth';
 import Dashboard from './pages/dashboard';
 import { Profile } from './pages/profile';
+import EventDetails from './pages/eventdetails';
 
 
 function App() {
@@ -13,6 +14,7 @@ function App() {
         <Route path="/auth" element={<Auth />} />
         <Route path="/dashboard" element={<Dashboard />} />
         <Route path="/profile" element={<Profile />} />
+        <Route path="/events/:eventId" element={<EventDetails />} />
       </Routes>
     </Router>
   );

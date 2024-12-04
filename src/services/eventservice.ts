@@ -1,4 +1,4 @@
-import { Event } from '../types';
+import { Event, ShareResponse } from '../types';
 
 const API_URL = 'http://localhost:3000/api';
 
@@ -69,5 +69,28 @@ export const eventsService = {
       const errorData = await response.json();
       throw new Error(errorData.message || 'Failed to join event');
     }
+  },
+
+  async getShareLink(eventId: string): Promise<ShareResponse> {
+    const token = localStorage.getItem('token');
+    if (!token) {
+      throw new Error('Authentication required');
+    }
+  
+    // Update to use the new public share endpoint
+    const response = await fetch(`${API_URL}/public/share/${eventId}`, {
+      headers: {
+        'Authorization': `Bearer ${token}`,
+        'Content-Type': 'application/json'
+      },
+    });
+  
+    if (!response.ok) {
+      const errorData = await response.json().catch(() => ({}));
+      throw new Error(errorData.message || 'Failed to generate share link');
+    }
+  
+    // Return the response containing the public URL
+    return response.json();
   }
-};
+}

@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Calendar, MapPin, Users, Loader2 } from 'lucide-react';
+import { Calendar, MapPin, Users, Loader2, Share2, X, Check } from 'lucide-react';
 import { Event } from '../types';
 import { eventsService } from '../services/eventservice';
 
@@ -10,9 +10,12 @@ interface EventCardProps {
 
 export const EventCard: React.FC<EventCardProps> = ({ event, onRefresh }) => {
   const [isJoining, setIsJoining] = useState(false);
+  const [isSharing, setIsSharing] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [showCountInput, setShowCountInput] = useState(false);
   const [count, setCount] = useState(1);
+  const [shareLink, setShareLink] = useState<string | null>(null);
+  const [showShareSuccess, setShowShareSuccess] = useState(false);
 
   const formatDate = (dateString: string) => {
     return new Date(dateString).toLocaleDateString('en-US', {
@@ -45,10 +48,53 @@ export const EventCard: React.FC<EventCardProps> = ({ event, onRefresh }) => {
     }
   };
 
+  const handleShare = async () => {
+    try {
+      setIsSharing(true);
+      setError(null);
+      
+      // Get the response from the service (public URL)
+      const response = await eventsService.getShareLink(event._id);
+  
+      // The response now contains the public URL directly
+      const fullShareLink = response.publicUrl;  // Use the public URL returned by the backend
+  
+      // Set the full URL for the share link
+      setShareLink(fullShareLink);
+  
+      // Copy the full share link to the clipboard
+      await navigator.clipboard.writeText(fullShareLink);
+  
+      // Display success message
+      setShowShareSuccess(true);
+      setTimeout(() => setShowShareSuccess(false), 2000);
+    } catch (err) {
+      setError(err instanceof Error ? err.message : 'Failed to generate share link');
+    } finally {
+      setIsSharing(false);
+    }
+  };
+  
+  
+
   return (
-    <div className="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition-shadow">
+    <div className="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition-shadow relative">
+      <button
+        onClick={handleShare}
+        className="absolute top-4 right-4 p-2 text-gray-500 hover:text-indigo-600 hover:bg-indigo-50 rounded-full transition-colors"
+        disabled={isSharing}
+      >
+        {isSharing ? (
+          <Loader2 size={20} className="animate-spin" />
+        ) : showShareSuccess ? (
+          <Check size={20} className="text-green-500" />
+        ) : (
+          <Share2 size={20} />
+        )}
+      </button>
+      
       <div className="p-6">
-        <h3 className="text-xl font-semibold text-gray-900">{event.eventname}</h3>
+        <h3 className="text-xl font-semibold text-gray-900 pr-12">{event.eventname}</h3>
         <div className="mt-4 space-y-2">
           <div className="flex items-center text-gray-600">
             <Calendar size={18} className="mr-2" />
