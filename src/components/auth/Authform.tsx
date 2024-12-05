@@ -66,7 +66,7 @@ export const AuthForm: React.FC<AuthFormProps> = ({
             className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
             required
             disabled={isLoading}
-            placeholder="Enter your location"
+            placeholder="eg: Andheri , Mira Road"
           />
         </div>
       )}

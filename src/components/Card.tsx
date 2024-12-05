@@ -27,9 +27,18 @@ export const EventCard: React.FC<EventCardProps> = ({ event, onRefresh }) => {
     });
   };
 
+  // Calculate available spots
+  const spotsAvailable = event.count - event.participants.length;
+  const totalSpots = event.count;
+
   const handleJoin = async () => {
     if (!showCountInput) {
       setShowCountInput(true);
+      return;
+    }
+
+    if (count > spotsAvailable) {
+      setError(`Only ${spotsAvailable} spots available`);
       return;
     }
 
@@ -52,20 +61,9 @@ export const EventCard: React.FC<EventCardProps> = ({ event, onRefresh }) => {
     try {
       setIsSharing(true);
       setError(null);
-      
-      // Get the response from the service (public URL)
       const response = await eventsService.getShareLink(event._id);
-  
-      // The response now contains the public URL directly
-      const fullShareLink = response.publicUrl;  // Use the public URL returned by the backend
-  
-      // Set the full URL for the share link
-      setShareLink(fullShareLink);
-  
-      // Copy the full share link to the clipboard
-      await navigator.clipboard.writeText(fullShareLink);
-  
-      // Display success message
+      setShareLink(response.shareLink);
+      await navigator.clipboard.writeText(window.location.origin + response.shareLink);
       setShowShareSuccess(true);
       setTimeout(() => setShowShareSuccess(false), 2000);
     } catch (err) {
@@ -74,8 +72,6 @@ export const EventCard: React.FC<EventCardProps> = ({ event, onRefresh }) => {
       setIsSharing(false);
     }
   };
-  
-  
 
   return (
     <div className="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition-shadow relative">
@@ -106,7 +102,11 @@ export const EventCard: React.FC<EventCardProps> = ({ event, onRefresh }) => {
           </div>
           <div className="flex items-center text-gray-600">
             <Users size={18} className="mr-2" />
-            <span>{event.participants.length}/{event.count} participants</span>
+            {spotsAvailable === 0 ? (
+              <span className="text-red-600 font-semibold">This Ground is full</span>
+            ) : (
+              <span>{spotsAvailable} spots left out of {totalSpots}</span>
+            )}
           </div>
         </div>
         {error && (
@@ -114,7 +114,7 @@ export const EventCard: React.FC<EventCardProps> = ({ event, onRefresh }) => {
             {error}
           </div>
         )}
-        {showCountInput && (
+        {showCountInput && spotsAvailable > 0 && (
           <div className="mt-4">
             <label className="block text-sm font-medium text-gray-700 mb-1">
               Number of spots needed:
@@ -122,16 +122,16 @@ export const EventCard: React.FC<EventCardProps> = ({ event, onRefresh }) => {
             <input
               type="number"
               min="1"
-              max={event.count - event.participants.length}
+              max={spotsAvailable}
               value={count}
-              onChange={(e) => setCount(Math.max(1, parseInt(e.target.value) || 1))}
+              onChange={(e) => setCount(Math.max(1, Math.min(spotsAvailable, parseInt(e.target.value) || 1)))}
               className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-1 focus:ring-indigo-500"
             />
           </div>
         )}
         <button 
           onClick={handleJoin}
-          disabled={isJoining || event.participants.length >= event.count}
+          disabled={isJoining || spotsAvailable === 0}
           className="mt-6 w-full bg-indigo-600 text-white py-2 rounded-md hover:bg-indigo-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center"
         >
           {isJoining ? (
@@ -139,8 +139,8 @@ export const EventCard: React.FC<EventCardProps> = ({ event, onRefresh }) => {
               <Loader2 size={20} className="animate-spin mr-2" />
               Joining...
             </>
-          ) : event.participants.length >= event.count ? (
-            'Event Full'
+          ) : spotsAvailable === 0 ? (
+            'This Ground is full'
           ) : showCountInput ? (
             'Confirm Join'
           ) : (

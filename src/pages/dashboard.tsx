@@ -57,7 +57,7 @@ export const Dashboard = () => {
       <Header />
       <div className="max-w-7xl mx-auto px-4 py-8 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center mb-8">
-          <h1 className="text-3xl font-bold text-gray-900">Sports Events</h1>
+          <h1 className="text-3xl font-bold text-gray-900">Khel Happening around you!</h1>
           <div className="flex gap-4">
             <button
               onClick={() => setShowModal(true)}
@@ -66,10 +66,10 @@ export const Dashboard = () => {
               <Plus size={20} />
               Create Event
             </button>
-            <button className="inline-flex items-center gap-2 bg-gray-100 text-gray-700 px-4 py-2 rounded-md hover:bg-gray-200 transition-colors">
+            {/* <button className="inline-flex items-center gap-2 bg-gray-100 text-gray-700 px-4 py-2 rounded-md hover:bg-gray-200 transition-colors">
               <Share size={20} />
               Share
-            </button>
+            </button> */}
           </div>
         </div>
 

@@ -57,7 +57,7 @@ export const EventList: React.FC<EventListProps> = ({ refreshTrigger = 0, events
   if (events.length === 0) {
     return (
       <div className="text-center py-8 text-gray-500">
-        {title ? `No ${title.toLowerCase()} found.` : 'No events found in your area.'}
+        {title ? `No ${title.toLowerCase()} found.` : 'No Khel found in your area. Try Creating one?'}
       </div>
     );
   }
