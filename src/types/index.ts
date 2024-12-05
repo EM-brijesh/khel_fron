@@ -3,6 +3,7 @@ export interface Event {
   eventname: string;
   location: string;
   count: number;
+  totalSpots: number;
   time: string;
   userId: string;
   participants: string[];
@@ -26,7 +27,6 @@ export interface UserInfo {
 }
 
 export interface ShareResponse {
-  [x: string]: any;
   message: string;
   event: {
     eventId: string;
@@ -36,4 +36,17 @@ export interface ShareResponse {
     remainingSpots: number;
   };
   shareLink: string;
+}
+
+export interface JoinEventResponse {
+  message: string;
+  event: {
+    eventname: string;
+    location: string;
+    time: string;
+    remainingSpots: number;
+    totalSpots: number;
+    totalParticipants: number;
+    spotsReserved: number;
+  };
 }

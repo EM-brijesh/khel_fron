@@ -36,7 +36,10 @@ export const eventsService = {
         'Content-Type': 'application/json',
         'Authorization': `Bearer ${token}`,
       },
-      body: JSON.stringify(eventData),
+      body: JSON.stringify({
+        ...eventData,
+        totalSpots: eventData.count // Ensure totalSpots is set when creating event
+      }),
     });
 
     if (!response.ok) {
@@ -76,21 +79,19 @@ export const eventsService = {
     if (!token) {
       throw new Error('Authentication required');
     }
-  
-    // Update to use the new public share endpoint
-    const response = await fetch(`${API_URL}/public/share/${eventId}`, {
+
+    const response = await fetch(`${API_URL}/share/${eventId}`, {
       headers: {
         'Authorization': `Bearer ${token}`,
         'Content-Type': 'application/json'
       },
     });
-  
+
     if (!response.ok) {
       const errorData = await response.json().catch(() => ({}));
       throw new Error(errorData.message || 'Failed to generate share link');
     }
-  
-    // Return the response containing the public URL
+
     return response.json();
   }
-}
+};

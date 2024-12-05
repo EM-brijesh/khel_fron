@@ -28,8 +28,8 @@ export const EventCard: React.FC<EventCardProps> = ({ event, onRefresh }) => {
   };
 
   // Calculate available spots
-  const spotsAvailable = event.count - event.participants.length;
-  const totalSpots = event.count;
+  const spotsAvailable = event.count;
+  const totalSpots = event.totalSpots;
 
   const handleJoin = async () => {
     if (!showCountInput) {
