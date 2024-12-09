@@ -1,6 +1,6 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { useParams, Link } from 'react-router-dom';
-import { Calendar, MapPin, Users, ArrowLeft, Loader2, Share2 } from 'lucide-react';
+import { Calendar, MapPin, Users, ArrowLeft, Loader2 } from 'lucide-react';
 import { Header } from '../components/Header';
 
 interface EventDetail {

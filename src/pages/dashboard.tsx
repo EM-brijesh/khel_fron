@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { Header } from '../components/Header';
 import { EventList } from '../components/EventList';
 import { ProfileWidget } from '../components/ProfileWidget';
-import { Plus, Share, Loader2 } from 'lucide-react';
+import { Plus, Loader2 } from 'lucide-react';
 import { eventsService } from '../services/eventservice';
 
 export const Dashboard = () => {
@@ -36,6 +36,7 @@ export const Dashboard = () => {
         location: formData.location,
         count: parseInt(formData.count),
         time: new Date(formData.time).toISOString(),
+        totalSpots: 0
       });
       setShowModal(false);
       setFormData({

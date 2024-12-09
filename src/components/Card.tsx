@@ -14,7 +14,7 @@ export const EventCard: React.FC<EventCardProps> = ({ event, onRefresh }) => {
   const [error, setError] = useState<string | null>(null);
   const [showCountInput, setShowCountInput] = useState(false);
   const [count, setCount] = useState(1);
-  const [shareLink, setShareLink] = useState<string | null>(null);
+  const [, setShareLink] = useState<string | null>(null);
   const [showShareSuccess, setShowShareSuccess] = useState(false);
 
   const formatDate = (dateString: string) => {

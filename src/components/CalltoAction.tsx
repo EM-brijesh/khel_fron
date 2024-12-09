@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
-import { MessageSquare, Mail, Twitter, Github, Linkedin, ExternalLink, Send } from 'lucide-react';
+import { MessageSquare, Send } from 'lucide-react';
 
 export const CallToAction = () => {
   const [showFeedbackForm, setShowFeedbackForm] = useState(false);
