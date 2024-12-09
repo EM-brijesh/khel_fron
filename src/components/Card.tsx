@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Calendar, MapPin, Users, Loader2, Share2, X, Check } from 'lucide-react';
+import { Calendar, MapPin, Users, Loader2, Share2, Check } from 'lucide-react';
 import { Event } from '../types';
 import { eventsService } from '../services/eventservice';
 
