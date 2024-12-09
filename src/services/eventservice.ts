@@ -1,6 +1,7 @@
+import { API_BASE_URL } from '../config/constants';
 import { Event, ShareResponse } from '../types';
 
-const API_URL = 'https://khel-bac.onrender.com/api';
+const API_URL = `${API_BASE_URL}/api`;
 
 export const eventsService = {
   async getEvents(): Promise<Event[]> {

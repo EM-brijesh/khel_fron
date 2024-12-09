@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { Calendar, MapPin, Users, ArrowLeft, Loader2 } from 'lucide-react';
 import { Header } from '../components/Header';
+import { API_BASE_URL } from '../config/constants';
 
 interface EventDetail {
   eventname: string;
@@ -24,7 +25,7 @@ const EventDetails = () => {
   useEffect(() => {
     const fetchEventDetails = async () => {
       try {
-        const response = await fetch(`http://localhost:3000/api/events/${eventId}`);
+        const response = await fetch(`${API_BASE_URL}/api/events/${eventId}`);
         if (!response.ok) {
           throw new Error('Event not found');
         }
@@ -59,7 +60,7 @@ const EventDetails = () => {
 
     try {
       setJoining(true);
-      const response = await fetch('http://localhost:3000/api/joinevent', {
+      const response = await fetch(`${API_BASE_URL}/api/joinevent`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -77,7 +78,7 @@ const EventDetails = () => {
       }
 
       // Refresh event details after joining
-      const updatedEvent = await fetch(`http://localhost:3000/api/events/${eventId}`);
+      const updatedEvent = await fetch(`${API_BASE_URL}/api/events/${eventId}`);
       const eventData = await updatedEvent.json();
       setEvent(eventData);
       setShowCountInput(false);
