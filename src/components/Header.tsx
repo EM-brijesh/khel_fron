@@ -14,7 +14,7 @@ export const Header = () => {
           to={isAuthenticated ? "/dashboard" : "/"} 
           className="text-2xl font-bold text-indigo-600"
         >
-          SportsMeet
+          Khelo
         </Link>
         
         {!isAuthenticated && location.pathname !== '/auth' && (
