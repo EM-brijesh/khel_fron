@@ -1,6 +1,6 @@
 import { Event } from '../types';
 
-const API_URL = 'http://localhost:3000/api';
+const API_URL = 'https://khel-bac.onrender.com/api';
 
 export interface JoinedEvent {
   eventId: Event;

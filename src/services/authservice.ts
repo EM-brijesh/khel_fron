@@ -1,6 +1,6 @@
 import { AuthResponse, LoginData, UserInfo } from '../types';
 
-const API_URL = 'http://localhost:3000/auth';
+const API_URL = 'https://khel-bac.onrender.com/auth';
 
 export const authService = {
   async login(data: LoginData): Promise<AuthResponse> {

@@ -1,6 +1,6 @@
 import { Event, ShareResponse } from '../types';
 
-const API_URL = 'http://localhost:3000/api';
+const API_URL = 'https://khel-bac.onrender.com/api';
 
 export const eventsService = {
   async getEvents(): Promise<Event[]> {
