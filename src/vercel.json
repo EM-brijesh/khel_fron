@@ -1,0 +1,9 @@
+{
+    "rewrites": [
+      {
+        "source": "/events/:eventId",
+        "destination": "/events/:eventId"
+      }
+    ]
+  }
+  
