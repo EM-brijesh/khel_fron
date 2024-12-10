@@ -3,7 +3,7 @@ import { Header } from '../components/Header';
 import { authService } from '../services/authservice';
 import { userService } from '../services/userservice';
 import { EventList } from '../components/EventList';
-import { UserCircle2, MapPin, Mail, Calendar, Loader2 } from 'lucide-react';
+import { UserCircle2, MapPin, Calendar, Loader2 } from 'lucide-react';
 import { Event } from '../types';
 
 export const Profile = () => {
@@ -61,10 +61,10 @@ export const Profile = () => {
                   <MapPin size={20} className="mr-2" />
                   <span>{userInfo.location}</span>
                 </div>
-                <div className="flex items-center text-gray-600">
+                {/* <div className="flex items-center text-gray-600">
                   <Mail size={20} className="mr-2" />
                   <span>{userInfo.username}@example.com</span>
-                </div>
+                </div> */}
                 <div className="flex items-center text-gray-600">
                   <Calendar size={20} className="mr-2" />
                   <span>Active Member</span>

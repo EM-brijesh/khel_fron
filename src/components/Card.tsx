@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
-import { Calendar, MapPin, Users, Loader2, Share2, Check } from 'lucide-react';
+import { Calendar, MapPin, Users, Loader2, } from 'lucide-react';
 import { Event } from '../types';
 import { eventsService } from '../services/eventservice';
+import { ShareButton } from './ShareButton';
 
 interface EventCardProps {
   event: Event;
@@ -10,12 +11,9 @@ interface EventCardProps {
 
 export const EventCard: React.FC<EventCardProps> = ({ event, onRefresh }) => {
   const [isJoining, setIsJoining] = useState(false);
-  const [isSharing, setIsSharing] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [showCountInput, setShowCountInput] = useState(false);
   const [count, setCount] = useState(1);
-  const [, setShareLink] = useState<string | null>(null);
-  const [showShareSuccess, setShowShareSuccess] = useState(false);
 
   const formatDate = (dateString: string) => {
     return new Date(dateString).toLocaleDateString('en-US', {
@@ -29,7 +27,7 @@ export const EventCard: React.FC<EventCardProps> = ({ event, onRefresh }) => {
 
   // Calculate available spots
   const spotsAvailable = event.count;
-  const totalSpots = event.totalSpots;
+  const isFull = spotsAvailable === 0;
 
   const handleJoin = async () => {
     if (!showCountInput) {
@@ -57,37 +55,9 @@ export const EventCard: React.FC<EventCardProps> = ({ event, onRefresh }) => {
     }
   };
 
-  const handleShare = async () => {
-    try {
-      setIsSharing(true);
-      setError(null);
-      const response = await eventsService.getShareLink(event._id);
-      setShareLink(response.shareLink);
-      await navigator.clipboard.writeText(window.location.origin + response.shareLink);
-      setShowShareSuccess(true);
-      setTimeout(() => setShowShareSuccess(false), 2000);
-    } catch (err) {
-      setError(err instanceof Error ? err.message : 'Failed to generate share link');
-    } finally {
-      setIsSharing(false);
-    }
-  };
-
   return (
     <div className="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition-shadow relative">
-      <button
-        onClick={handleShare}
-        className="absolute top-4 right-4 p-2 text-gray-500 hover:text-indigo-600 hover:bg-indigo-50 rounded-full transition-colors"
-        disabled={isSharing}
-      >
-        {isSharing ? (
-          <Loader2 size={20} className="animate-spin" />
-        ) : showShareSuccess ? (
-          <Check size={20} className="text-green-500" />
-        ) : (
-          <Share2 size={20} />
-        )}
-      </button>
+      <ShareButton eventId={event._id} />
       
       <div className="p-6">
         <h3 className="text-xl font-semibold text-gray-900 pr-12">{event.eventname}</h3>
@@ -102,11 +72,13 @@ export const EventCard: React.FC<EventCardProps> = ({ event, onRefresh }) => {
           </div>
           <div className="flex items-center text-gray-600">
             <Users size={18} className="mr-2" />
-            {spotsAvailable === 0 ? (
-              <span className="text-red-600 font-semibold">This Ground is full</span>
-            ) : (
-              <span>{spotsAvailable} spots left out of {totalSpots}</span>
-            )}
+            <span>
+              {isFull ? (
+                <span className="text-red-600 font-semibold">This Ground is full</span>
+              ) : (
+                `${spotsAvailable} spots left out of ${event.totalSpots}`
+              )}
+            </span>
           </div>
         </div>
         {error && (
@@ -114,7 +86,7 @@ export const EventCard: React.FC<EventCardProps> = ({ event, onRefresh }) => {
             {error}
           </div>
         )}
-        {showCountInput && spotsAvailable > 0 && (
+        {showCountInput && !isFull && (
           <div className="mt-4">
             <label className="block text-sm font-medium text-gray-700 mb-1">
               Number of spots needed:
@@ -131,7 +103,7 @@ export const EventCard: React.FC<EventCardProps> = ({ event, onRefresh }) => {
         )}
         <button 
           onClick={handleJoin}
-          disabled={isJoining || spotsAvailable === 0}
+          disabled={isJoining || isFull}
           className="mt-6 w-full bg-indigo-600 text-white py-2 rounded-md hover:bg-indigo-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center"
         >
           {isJoining ? (
@@ -139,7 +111,7 @@ export const EventCard: React.FC<EventCardProps> = ({ event, onRefresh }) => {
               <Loader2 size={20} className="animate-spin mr-2" />
               Joining...
             </>
-          ) : spotsAvailable === 0 ? (
+          ) : isFull ? (
             'This Ground is full'
           ) : showCountInput ? (
             'Confirm Join'
