@@ -1,9 +1,12 @@
 {
-    "rewrites": [
-      {
-        "source": "/events/:eventId",
-        "destination": "/events/:eventId"
-      }
-    ]
-  }
-  
+  "rewrites": [
+    {
+      "source": "/events/:eventId",
+      "destination": "/index.html"
+    },
+    {
+      "source": "/(.*)",
+      "destination": "/index.html"
+    }
+  ]
+}
