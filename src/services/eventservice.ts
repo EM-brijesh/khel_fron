@@ -1,4 +1,4 @@
-import { Event } from '../types';
+import { Event, ShareResponse } from '../types';
 import { API_BASE_URL } from '../config/constants';
 
 export const eventsService = {
@@ -70,33 +70,30 @@ export const eventsService = {
     }
   },
 
-  // eventsService.ts
-// eventsService.ts
-// eventsService.ts
-async getShareLink(eventId: string): Promise<string> {
-  try {
-    const response = await fetch(`${API_BASE_URL}/api/public/share/${eventId}`, {
-      headers: {
-        'Authorization': `Bearer ${localStorage.getItem('token')}`,
-        'Content-Type': 'application/json'
-      },
-    });
+  async getShareLink(eventId: string): Promise<ShareResponse> {
+    try {
+      const response = await fetch(`${API_BASE_URL}/api/public/share/${eventId}`, {
+        headers: {
+          'Authorization': `Bearer ${localStorage.getItem('token')}`,
+          'Content-Type': 'application/json'
+        },
+      });
 
-    if (!response.ok) {
-      const errorData = await response.json();
-      throw new Error(errorData.message || 'Failed to generate share link');
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.message || 'Failed to generate share link');
+      }
+
+      const data = await response.json();
+      
+      // Override the backend URL with the frontend URL
+      const frontendUrl = window.location.origin;
+      return {
+        ...data,
+        shareLink: `${frontendUrl}/events/${eventId}`
+      };
+    } catch (error) {
+      throw new Error(error instanceof Error ? error.message : 'Failed to generate share link');
     }
-
-    // Get the frontend domain dynamically
-    const frontendUrl = window.location.origin;  // This will give the current domain (e.g., http://localhost:5173 or https://khel-front.vercel.app)
-
-    // Return the constructed frontend URL for the event details page
-    return `${frontendUrl}/events/${eventId}`;
-  } catch (error) {
-    throw new Error(error instanceof Error ? error.message : 'Failed to generate share link');
   }
-}
-
-
-
-}
+};
