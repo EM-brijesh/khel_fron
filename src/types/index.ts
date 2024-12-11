@@ -52,3 +52,4 @@ export interface JoinEventResponse {
     spotsReserved: number;
   };
 }
+//comment
