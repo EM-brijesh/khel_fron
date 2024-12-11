@@ -34,6 +34,8 @@ export interface ShareResponse {
     location: string;
     time: string;
     remainingSpots: number;
+    totalSpots: number;
+    participantsCount: number;
   };
   shareLink: string;
 }

@@ -16,13 +16,22 @@ export const ShareButton: React.FC<ShareButtonProps> = ({ eventId }) => {
       setIsSharing(true);
       setError(null);
 
-      // Fetch the share link (string)
-      const shareUrl = await eventsService.getShareLink(eventId);
+      // Get the share response from the service
+      const shareResponse = await eventsService.getShareLink(eventId);
 
-      // Copy the shareable URL to the clipboard
-      await navigator.clipboard.writeText(shareUrl);
+      // Use the shareLink from the response
+      if (navigator.share) {
+        // Use Web Share API if available
+        await navigator.share({
+          title: shareResponse.event.eventname,
+          text: `Join this sports event at ${shareResponse.event.location}!`,
+          url: shareResponse.shareLink
+        });
+      } else {
+        // Fallback to clipboard copy
+        await navigator.clipboard.writeText(shareResponse.shareLink);
+      }
 
-      // Show success feedback
       setShowSuccess(true);
       setTimeout(() => setShowSuccess(false), 2000);
     } catch (error) {
@@ -39,6 +48,11 @@ export const ShareButton: React.FC<ShareButtonProps> = ({ eventId }) => {
       {error && (
         <div className="absolute bottom-full right-0 mb-2 whitespace-nowrap bg-red-100 text-red-700 px-3 py-1 rounded-md text-sm">
           {error}
+        </div>
+      )}
+      {showSuccess && (
+        <div className="absolute bottom-full right-0 mb-2 whitespace-nowrap bg-green-100 text-green-700 px-3 py-1 rounded-md text-sm">
+          Link copied to clipboard!
         </div>
       )}
       <button
