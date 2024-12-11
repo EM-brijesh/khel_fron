@@ -1,20 +1,23 @@
-import { useState, useEffect } from 'react';
-import { useParams, Link } from 'react-router-dom';
-import { Calendar, MapPin, Users, ArrowLeft, Loader2 } from 'lucide-react';
+import React, { useState, useEffect } from 'react';
+import { useParams, Link, useNavigate } from 'react-router-dom';
+import { Calendar, MapPin, Users, ArrowLeft, Loader2, Share2 } from 'lucide-react';
 import { Header } from '../components/Header';
-import { API_BASE_URL } from '../config/constants';
+import { apiService } from '../services/apiservice';
 
 interface EventDetail {
+  _id: string;
   eventname: string;
   location: string;
   time: string;
   count: number;
+  totalSpots: number;
   participants: string[];
   userId: string;
 }
 
 const EventDetails = () => {
   const { eventId } = useParams<{ eventId: string }>();
+  const navigate = useNavigate();
   const [event, setEvent] = useState<EventDetail | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
@@ -24,22 +27,32 @@ const EventDetails = () => {
 
   useEffect(() => {
     const fetchEventDetails = async () => {
+      if (!eventId) {
+        navigate('/');
+        return;
+      }
+
       try {
-        const response = await fetch(`${API_BASE_URL}/api/events/${eventId}`);
+        const response = await fetch(`${import.meta.env.VITE_API_URL || 'https://khel-bac.onrender.com'}/api/events/${eventId}`);
+        
         if (!response.ok) {
           throw new Error('Event not found');
         }
+
         const eventData = await response.json();
         setEvent(eventData);
       } catch (err) {
         setError(err instanceof Error ? err.message : 'Failed to fetch event details');
+        if (err instanceof Error && err.message === 'Event not found') {
+          navigate('/');
+        }
       } finally {
         setLoading(false);
       }
     };
 
     fetchEventDetails();
-  }, [eventId]);
+  }, [eventId, navigate]);
 
   const formatDate = (dateString: string) => {
     return new Date(dateString).toLocaleDateString('en-US', {
@@ -60,26 +73,12 @@ const EventDetails = () => {
 
     try {
       setJoining(true);
-      const response = await fetch(`${API_BASE_URL}/api/joinevent`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${localStorage.getItem('token')}`,
-        },
-        body: JSON.stringify({
-          name: event?.eventname,
-          count: count,
-        }),
-      });
+      await apiService.post('/api/joinevent', {
+        name: event?.eventname,
+        count: count
+      }, { token: true });
 
-      if (!response.ok) {
-        const errorData = await response.json();
-        throw new Error(errorData.message || 'Failed to join event');
-      }
-
-      // Refresh event details after joining
-      const updatedEvent = await fetch(`${API_BASE_URL}/api/events/${eventId}`);
-      const eventData = await updatedEvent.json();
+      const eventData = await apiService.get<EventDetail>(`/api/events/${eventId}`);
       setEvent(eventData);
       setShowCountInput(false);
     } catch (err) {
@@ -137,6 +136,9 @@ const EventDetails = () => {
     );
   }
 
+  const availableSpots = event.count;
+  const isFull = availableSpots === 0;
+
   return (
     <div className="min-h-screen bg-gray-50">
       <Header />
@@ -168,7 +170,7 @@ const EventDetails = () => {
                 <div className="flex items-center text-gray-700">
                   <Users className="w-5 h-5 mr-3 text-indigo-600" />
                   <span>
-                    {event.participants.length} / {event.count} participants
+                    {event.participants.length} / {event.totalSpots} participants
                   </span>
                 </div>
               </div>
@@ -176,14 +178,14 @@ const EventDetails = () => {
               <div className="space-y-4">
                 <div className="p-4 bg-indigo-50 rounded-lg">
                   <h3 className="font-semibold text-indigo-900 mb-2">
-                    Spots Available
+                    {isFull ? 'Event Status' : 'Spots Available'}
                   </h3>
                   <div className="text-3xl font-bold text-indigo-600">
-                    {event.count - event.participants.length}
+                    {isFull ? 'This Ground is full' : `${availableSpots} spots left`}
                   </div>
                 </div>
 
-                {showCountInput && (
+                {showCountInput && !isFull && (
                   <div className="space-y-2">
                     <label className="block text-sm font-medium text-gray-700">
                       How many spots do you need?
@@ -191,7 +193,7 @@ const EventDetails = () => {
                     <input
                       type="number"
                       min="1"
-                      max={event.count - event.participants.length}
+                      max={availableSpots}
                       value={count}
                       onChange={(e) => setCount(Math.max(1, parseInt(e.target.value) || 1))}
                       className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-1 focus:ring-indigo-500"
@@ -201,7 +203,7 @@ const EventDetails = () => {
 
                 <button
                   onClick={handleJoin}
-                  disabled={joining || event.participants.length >= event.count}
+                  disabled={joining || isFull}
                   className="w-full bg-indigo-600 text-white py-3 rounded-md hover:bg-indigo-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center"
                 >
                   {joining ? (
@@ -209,8 +211,8 @@ const EventDetails = () => {
                       <Loader2 className="w-5 h-5 mr-2 animate-spin" />
                       Joining...
                     </>
-                  ) : event.participants.length >= event.count ? (
-                    'Event Full'
+                  ) : isFull ? (
+                    'This Ground is full'
                   ) : showCountInput ? (
                     'Confirm Join'
                   ) : (
@@ -218,7 +220,7 @@ const EventDetails = () => {
                   )}
                 </button>
 
-                {/* <button
+                <button
                   onClick={() => {
                     navigator.clipboard.writeText(window.location.href);
                   }}
@@ -226,7 +228,7 @@ const EventDetails = () => {
                 >
                   <Share2 className="w-5 h-5 mr-2" />
                   Share Event
-                </button> */}
+                </button>
               </div>
             </div>
 
@@ -249,4 +251,4 @@ const EventDetails = () => {
   );
 };
 
-export default EventDetails;    
+export default EventDetails;
