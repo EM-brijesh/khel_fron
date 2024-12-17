@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Calendar, MapPin, Users, Loader2, } from 'lucide-react';
+import { Calendar, MapPin, Users, Loader2 } from 'lucide-react';
 import { Event } from '../types';
 import { eventsService } from '../services/eventservice';
 import { ShareButton } from './ShareButton';
@@ -8,7 +8,6 @@ interface EventCardProps {
   event: Event;
   onRefresh?: () => void;
 }
-
 export const EventCard: React.FC<EventCardProps> = ({ event, onRefresh }) => {
   const [isJoining, setIsJoining] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -55,6 +54,8 @@ export const EventCard: React.FC<EventCardProps> = ({ event, onRefresh }) => {
     }
   };
 
+  console.log(event)
+
   return (
     <div className="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition-shadow relative">
       <ShareButton eventId={event._id} />
@@ -79,6 +80,18 @@ export const EventCard: React.FC<EventCardProps> = ({ event, onRefresh }) => {
                 `${spotsAvailable} spots left out of ${event.totalSpots}`
               )}
             </span>
+          </div>
+          <div className="mt-4">
+            <h4 className="text-gray-600">Participants:</h4>
+            <ul className="list-disc pl-5">
+              {event.participants && event.participants.length > 0 ? (
+                event.participants.map((username, index) => (
+                  <li key={index} className="text-gray-700">{username}</li>
+                ))
+              ) : (
+                <li className="text-gray-700">No participants yet</li>
+              )}
+            </ul>
           </div>
         </div>
         {error && (
