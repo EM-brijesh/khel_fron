@@ -1,6 +1,6 @@
 import React from "react";
 import { Calendar, MapPin, Users } from "lucide-react";
-import { useNavigate } from "react-router-dom";
+
 
 interface CardProps {
   title: string;
@@ -17,12 +17,11 @@ const Card: React.FC<CardProps> = ({
   desc,
   date,
   location,
-  isFull,
+ 
   participants,
   vacant,
 }) => {
   const availableSpots = vacant - participants.length;
-  const navigate = useNavigate();
 
   return (
     <div className="flex flex-col bg-white shadow-lg rounded-xl p-6 w-80">

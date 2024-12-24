@@ -1,5 +1,3 @@
-import React from 'react';
-
 import Card from './StaticCard';
 
 
@@ -21,22 +19,22 @@ export const Features = () => {
             desc="Need 6 Players for the match!"
             date="20:00"
             location="ISF Turf Kanaika"
-            vacant={6} isFull={false} participants={['HDBASJHDASJHAD', 'DASDASDA']}
+            vacant={6} isFull={false} participants={['Rahul', 'Raj']}
           />
           <Card
             title="FootBall Match"
             desc="Any team up for FUTSAL?"
             date="16:00"
-            location="Seven Eleven Turf , Mira Road"
-            vacant={6} isFull={false} participants={[]}
+            location="Play Arena Lower Parel"
+            vacant={10} isFull={false} participants={["Mohan" , "Roy"]}
           />
          
           <Card
             title="Volley SESh!"
             desc="Join Morning Volleyball"
             date="7:30"
-            location="Orange Ground Mira Road"
-            vacant={6} isFull={false} participants={[]}
+            location="Khar GYM-Khana"
+            vacant={6} isFull={false} participants={["Adam" , "Ravi"]}
           />
         </div>
 
