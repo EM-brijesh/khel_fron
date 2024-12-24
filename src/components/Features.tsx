@@ -1,21 +1,8 @@
 import React from 'react';
-import { Users, Calendar, Trophy, MapPin } from 'lucide-react';
 
-interface FeatureProps {
-  icon: React.ReactNode;
-  title: string;
-  description: string;
-}
+import Card from './StaticCard';
 
-const Feature = ({ icon, title, description }: FeatureProps) => (
-  <div className="flex flex-col items-center text-center p-6">
-    <div className="bg-indigo-100 p-3 rounded-full mb-4">
-      {icon}
-    </div>
-    <h3 className="text-xl font-semibold mb-2">{title}</h3>
-    <p className="text-gray-600">{description}</p>
-  </div>
-);
+
 
 export const Features = () => {
   return (
@@ -25,7 +12,34 @@ export const Features = () => {
           <h2 className="text-3xl font-bold text-gray-900">Why Choose Khelo?</h2>
           <p className="mt-4 text-xl text-gray-600">Connect with local sports enthusiasts and make every game count</p>
         </div>
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+        
+        <div className="grid grid-cols-3 gap-8">
+                  {/* Cards only on Home page */}
+                  <Card
+                    title="Cricket Match"
+                    desc="Need 6 Players for the match!"
+                    date="20:00"
+                    location="ISF Turf Kanaika"
+                    vacant={6} isFull={false} participants={['HDBASJHDASJHAD' , 'DASDASDA']}                  />
+                  <Card
+                    title="FootBall Match"
+                    desc="Any team up for FUTSAL?"
+                    date="16:00"
+                    location="Seven Eleven Turf , Mira Road"
+                    vacant={6} isFull={false} participants={[]}
+                  />
+                  <Card
+                    title="Volley SESh!"
+                    desc="Join Morning Volleyball"
+                    date="7:30"
+                    location="Orange Ground Mira Road"
+                    vacant={6} isFull={false} participants={[]}
+                  />
+                </div>
+
+
+       
+        {/* <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
           <Feature
             icon={<Users className="w-6 h-6 text-indigo-600" />}
             title="Community First"
@@ -46,7 +60,7 @@ export const Features = () => {
             title="Local Focus"
             description="Discover sports venues and events in your neighborhood"
           />
-        </div>
+        </div> */}
       </div>
     </div>
   );
