@@ -12,33 +12,36 @@ export const Features = () => {
           <h2 className="text-3xl font-bold text-gray-900">Why Choose Khelo?</h2>
           <p className="mt-4 text-xl text-gray-600">Connect with local sports enthusiasts and make every game count</p>
         </div>
-        
-        <div className="grid grid-cols-3 gap-8">
-                  {/* Cards only on Home page */}
-                  <Card
-                    title="Cricket Match"
-                    desc="Need 6 Players for the match!"
-                    date="20:00"
-                    location="ISF Turf Kanaika"
-                    vacant={6} isFull={false} participants={['HDBASJHDASJHAD' , 'DASDASDA']}                  />
-                  <Card
-                    title="FootBall Match"
-                    desc="Any team up for FUTSAL?"
-                    date="16:00"
-                    location="Seven Eleven Turf , Mira Road"
-                    vacant={6} isFull={false} participants={[]}
-                  />
-                  <Card
-                    title="Volley SESh!"
-                    desc="Join Morning Volleyball"
-                    date="7:30"
-                    location="Orange Ground Mira Road"
-                    vacant={6} isFull={false} participants={[]}
-                  />
-                </div>
+
+        <div className="grid grid-cols-3 gap-8 animate-float style={{ animationDelay: '0s' }}">
+          {/* Cards only on Home page */}
+    
+          <Card
+            title="Cricket Match"
+            desc="Need 6 Players for the match!"
+            date="20:00"
+            location="ISF Turf Kanaika"
+            vacant={6} isFull={false} participants={['HDBASJHDASJHAD', 'DASDASDA']}
+          />
+          <Card
+            title="FootBall Match"
+            desc="Any team up for FUTSAL?"
+            date="16:00"
+            location="Seven Eleven Turf , Mira Road"
+            vacant={6} isFull={false} participants={[]}
+          />
+         
+          <Card
+            title="Volley SESh!"
+            desc="Join Morning Volleyball"
+            date="7:30"
+            location="Orange Ground Mira Road"
+            vacant={6} isFull={false} participants={[]}
+          />
+        </div>
 
 
-       
+
         {/* <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
           <Feature
             icon={<Users className="w-6 h-6 text-indigo-600" />}
