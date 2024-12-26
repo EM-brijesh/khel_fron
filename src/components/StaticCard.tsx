@@ -24,18 +24,18 @@ const Card: React.FC<CardProps> = ({
   const availableSpots = vacant - participants.length;
 
   return (
-    <div className="flex flex-col bg-white shadow-lg rounded-xl p-6 w-80">
-      <h2 className="text-lg font-semibold text-gray-800">{title}</h2>
-      <p className="text-sm text-gray-600 mt-1">{desc}</p>
-      <div className="flex items-center text-gray-600 mt-3">
+    <div className="flex flex-col bg-indigo-100 shadow-lg rounded-xl p-6 w-80">
+      <h2 className="text-lg font-semibold text-black-800">{title}</h2>
+      <p className="text-sm text-black-600 mt-1">{desc}</p>
+      <div className="flex items-center text-black-600 mt-3">
         <Calendar className="w-5 h-5 mr-2" />
         <span>{date}</span>
       </div>
-      <div className="flex items-center text-gray-600 mt-2">
+      <div className="flex items-center text-black-600 mt-2">
         <MapPin className="w-5 h-5 mr-2" />
         <span>{location}</span>
       </div>
-      <div className="flex items-center text-gray-600 mt-2">
+      <div className="flex items-center text-black-600 mt-2">
         <Users className="w-5 h-5 mr-2" />
         <span>
           <strong>{availableSpots}</strong> spots available out of{" "}
@@ -43,8 +43,8 @@ const Card: React.FC<CardProps> = ({
         </span>
       </div>
       <div className="mt-4">
-        <h3 className="text-gray-700 text-sm font-medium">Participants:</h3>
-        <ul className="text-sm text-gray-600 list-disc list-inside mt-2">
+        <h3 className="text-black-700 text-sm font-medium">Participants:</h3>
+        <ul className="text-sm text-black-600 list-disc list-inside mt-2">
           {participants.length > 0 ? (
             participants.map((participant, index) => (
               <li key={index}>{participant}</li>

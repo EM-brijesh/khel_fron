@@ -11,22 +11,21 @@ export const Features = () => {
           <p className="mt-4 text-xl text-gray-600">Connect with local sports enthusiasts and make every game count</p>
         </div>
 
-        <div className="grid grid-cols-3 gap-8 animate-float style={{ animationDelay: '0s' }}">
+        <div className="grid grid-cols-3 gap-8 animate-float bg-indig style={{ animationDelay: '0s' }}">
           {/* Cards only on Home page */}
-    
-          <Card
+          <Card 
             title="Cricket Match"
             desc="Need 6 Players for the match!"
             date="20:00"
             location="ISF Turf Kanaika"
-            vacant={6} isFull={false} participants={['Rahul', 'Raj']}
+            vacant={8} isFull={false} participants={['Rahul', 'Raj' ,'+2']}
           />
           <Card
             title="FootBall Match"
             desc="Any team up for FUTSAL?"
             date="16:00"
             location="Play Arena Lower Parel"
-            vacant={10} isFull={false} participants={["Mohan" , "Roy"]}
+            vacant={10} isFull={false} participants={["Mohan" , "Roy" , '+4']}
           />
          
           <Card
@@ -34,7 +33,7 @@ export const Features = () => {
             desc="Join Morning Volleyball"
             date="7:30"
             location="Khar GYM-Khana"
-            vacant={6} isFull={false} participants={["Adam" , "Ravi"]}
+            vacant={6} isFull={false} participants={["Adam" , "Ravi" , '+2']}
           />
         </div>
 

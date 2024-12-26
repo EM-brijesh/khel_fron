@@ -28,6 +28,11 @@ export const EventCard: React.FC<EventCardProps> = ({ event, onRefresh }) => {
   const spotsAvailable = event.count;
   const isFull = spotsAvailable === 0;
 
+  // Determine the participants display
+  const maxDisplayedParticipants = 2;
+  const displayedParticipants = event.participants?.slice(0, maxDisplayedParticipants) || [];
+  const remainingParticipantsCount = event.participants?.length - maxDisplayedParticipants;
+
   const handleJoin = async () => {
     if (!showCountInput) {
       setShowCountInput(true);
@@ -54,24 +59,22 @@ export const EventCard: React.FC<EventCardProps> = ({ event, onRefresh }) => {
     }
   };
 
-  console.log(event)
-
   return (
-    <div className="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition-shadow relative">
+    <div className="bg-indigo-100 rounded-lg shadow-md overflow-hidden hover:shadow-lg transition-shadow relative">
       <ShareButton eventId={event._id} />
       
       <div className="p-6">
-        <h3 className="text-xl font-semibold text-gray-900 pr-12">{event.eventname}</h3>
+        <h3 className="text-xl font-semibold text-black-900 pr-12">{event.eventname}</h3>
         <div className="mt-4 space-y-2">
-          <div className="flex items-center text-gray-600">
+          <div className="flex items-center text-black-600">
             <Calendar size={18} className="mr-2" />
             <span>{formatDate(event.time)}</span>
           </div>
-          <div className="flex items-center text-gray-600">
+          <div className="flex items-center text-black-600">
             <MapPin size={18} className="mr-2" />
             <span>{event.location}</span>
           </div>
-          <div className="flex items-center text-gray-600">
+          <div className="flex items-center text-black-600">
             <Users size={18} className="mr-2" />
             <span>
               {isFull ? (
@@ -82,14 +85,17 @@ export const EventCard: React.FC<EventCardProps> = ({ event, onRefresh }) => {
             </span>
           </div>
           <div className="mt-4">
-            <h4 className="text-gray-600">Participants:</h4>
+            <h4 className="text-black-600">Participants:</h4>
             <ul className="list-disc pl-5">
-              {event.participants && event.participants.length > 0 ? (
-                event.participants.map((username, index) => (
-                  <li key={index} className="text-gray-700">{username}</li>
+              {displayedParticipants.length > 0 ? (
+                displayedParticipants.map((username, index) => (
+                  <li key={index} className="text-black-700">{username}</li>
                 ))
               ) : (
-                <li className="text-gray-700">No participants yet</li>
+                <li className="text-black-700">No participants yet</li>
+              )}
+              {remainingParticipantsCount > 0 && (
+                <li className="text-black-700 text-gray-500">+{remainingParticipantsCount} more</li>
               )}
             </ul>
           </div>
@@ -101,7 +107,7 @@ export const EventCard: React.FC<EventCardProps> = ({ event, onRefresh }) => {
         )}
         {showCountInput && !isFull && (
           <div className="mt-4">
-            <label className="block text-sm font-medium text-gray-700 mb-1">
+            <label className="block text-sm font-medium text-black-700 mb-1">
               Number of spots needed:
             </label>
             <input
@@ -110,7 +116,7 @@ export const EventCard: React.FC<EventCardProps> = ({ event, onRefresh }) => {
               max={spotsAvailable}
               value={count}
               onChange={(e) => setCount(Math.max(1, Math.min(spotsAvailable, parseInt(e.target.value) || 1)))}
-              className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-1 focus:ring-indigo-500"
+              className="w-full px-3 py-2 border border-black-300 rounded-md focus:outline-none focus:ring-1 focus:ring-indigo-500"
             />
           </div>
         )}
