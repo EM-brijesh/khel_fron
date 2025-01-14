@@ -2,20 +2,20 @@ import Card from './StaticCard';
 
 export const Features = () => {
   return (
-    <div className="bg-white py-8 sm:py-12 lg:py-16">
-      <div className="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        {/* Heading section with adjusted spacing */}
-        <div className="text-center mb-6 sm:mb-8 lg:mb-12">
-          <h2 className="text-2xl sm:text-3xl font-bold text-gray-900">
+    <div className="w-full bg-white py-8 sm:py-12 lg:py-16">
+      <div className="mx-auto w-full max-w-[1280px] px-4 sm:px-6 lg:px-8">
+        {/* Heading section */}
+        <div className="mb-8 text-center">
+          <h2 className="text-2xl font-bold text-gray-900 sm:text-3xl">
             Why Choose Khelo?
           </h2>
-          <p className="mt-2 sm:mt-3 text-base sm:text-lg text-gray-600 max-w-xl mx-auto">
+          <p className="mx-auto mt-2 max-w-2xl text-base text-gray-600 sm:mt-3 sm:text-lg">
             Connect with local sports enthusiasts and make every game count
           </p>
         </div>
 
-        {/* Card container with improved spacing and mobile-first layout */}
-        <div className="w-full space-y-4 sm:space-y-0 sm:grid sm:grid-cols-2 lg:grid-cols-3 sm:gap-4 md:gap-6">
+        {/* Cards grid with fallback spacing */}
+        <div className="grid w-full grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
           {/* Cricket Match */}
           <div className="w-full">
             <Card 
