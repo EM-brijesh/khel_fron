@@ -1,3 +1,4 @@
+
 import Card from './StaticCard';
 
 export const Features = () => {
@@ -14,46 +15,40 @@ export const Features = () => {
           </p>
         </div>
 
-        {/* Cards grid with fallback spacing */}
-        <div className="grid w-full grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
+        {/* Cards grid - centered with auto margins */}
+        <div className="grid w-full place-items-center grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
           {/* Cricket Match */}
-          <div className="w-full">
-            <Card 
-              title="Cricket Match"
-              desc="Need 6 Players for the match!"
-              date="20:00"
-              location="ISF Turf Kanaika"
-              vacant={8}
-              isFull={false}
-              participants={['Rahul', 'Raj', '+2']}
-            />
-          </div>
+          <Card 
+            title="Cricket Match"
+            desc="Need 6 Players for the match!"
+            date="20:00"
+            location="ISF Turf Kanaika"
+            vacant={8}
+            isFull={false}
+            participants={['Rahul', 'Raj', '+2']}
+          />
 
           {/* Football Match */}
-          <div className="w-full">
-            <Card
-              title="FootBall Match"
-              desc="Any team up for FUTSAL?"
-              date="16:00"
-              location="Play Arena Lower Parel"
-              vacant={10}
-              isFull={false}
-              participants={["Mohan", "Roy", '+4']}
-            />
-          </div>
+          <Card
+            title="FootBall Match"
+            desc="Any team up for FUTSAL?"
+            date="16:00"
+            location="Play Arena Lower Parel"
+            vacant={10}
+            isFull={false}
+            participants={["Mohan", "Roy", '+4']}
+          />
 
           {/* Volleyball */}
-          <div className="w-full">
-            <Card
-              title="Volley SESh!"
-              desc="Join Morning Volleyball"
-              date="7:30"
-              location="Khar GYM-Khana"
-              vacant={6}
-              isFull={false}
-              participants={["Adam", "Ravi", '+2']}
-            />
-          </div>
+          <Card
+            title="Volley SESh!"
+            desc="Join Morning Volleyball"
+            date="7:30"
+            location="Khar GYM-Khana"
+            vacant={6}
+            isFull={false}
+            participants={["Adam", "Ravi", '+2']}
+          />
         </div>
       </div>
     </div>
