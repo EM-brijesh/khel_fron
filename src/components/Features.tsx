@@ -2,22 +2,22 @@ import Card from './StaticCard';
 
 export const Features = () => {
   return (
-    <div className="bg-white py-12 sm:py-16 md:py-20 lg:py-24">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        {/* Responsive heading section */}
-        <div className="text-center mb-8 sm:mb-12 lg:mb-16">
+    <div className="bg-white py-8 sm:py-12 lg:py-16">
+      <div className="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        {/* Heading section with adjusted spacing */}
+        <div className="text-center mb-6 sm:mb-8 lg:mb-12">
           <h2 className="text-2xl sm:text-3xl font-bold text-gray-900">
             Why Choose Khelo?
           </h2>
-          <p className="mt-3 sm:mt-4 text-lg sm:text-xl text-gray-600 max-w-2xl mx-auto">
+          <p className="mt-2 sm:mt-3 text-base sm:text-lg text-gray-600 max-w-xl mx-auto">
             Connect with local sports enthusiasts and make every game count
           </p>
         </div>
 
-        {/* Responsive grid layout */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6 lg:gap-8 animate-float">
-          {/* Cricket Match Card */}
-          <div className="flex justify-center">
+        {/* Card container with improved spacing and mobile-first layout */}
+        <div className="w-full space-y-4 sm:space-y-0 sm:grid sm:grid-cols-2 lg:grid-cols-3 sm:gap-4 md:gap-6">
+          {/* Cricket Match */}
+          <div className="w-full">
             <Card 
               title="Cricket Match"
               desc="Need 6 Players for the match!"
@@ -29,8 +29,8 @@ export const Features = () => {
             />
           </div>
 
-          {/* Football Match Card */}
-          <div className="flex justify-center">
+          {/* Football Match */}
+          <div className="w-full">
             <Card
               title="FootBall Match"
               desc="Any team up for FUTSAL?"
@@ -42,8 +42,8 @@ export const Features = () => {
             />
           </div>
 
-          {/* Volleyball Card */}
-          <div className="flex justify-center">
+          {/* Volleyball */}
+          <div className="w-full">
             <Card
               title="Volley SESh!"
               desc="Join Morning Volleyball"
