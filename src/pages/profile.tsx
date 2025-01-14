@@ -98,8 +98,8 @@ export const Profile = () => {
         )}
 
         <div className="mt-8 space-y-8">
-          <EventList events={createdEvents} title="Created Events" />
-          <EventList events={joinedEvents} title="Joined Events" />
+          {/* <EventList events={createdEvents} title="Created Events" />
+          <EventList events={joinedEvents} title="Joined Events" /> */}
         </div>
       </div>
     </div>
