@@ -2,7 +2,6 @@ import { useEffect, useState } from 'react';
 import { Header } from '../components/Header';
 import { authService } from '../services/authservice';
 import { userService } from '../services/userservice';
-import { EventList } from '../components/EventList';
 import { UserCircle2, MapPin, Calendar, Loader2 } from 'lucide-react';
 import { Event } from '../types';
 
