@@ -19,7 +19,6 @@ export const Hero = () => {
             Join Khelo to discover local sports events, connect with fellow athletes, 
             and make every game more exciting.
           </p>
-          <p classname='bg-red-200'>Lorem ipsum dolor sit amet consectetur adipisicing elit. Dignissimos ipsam recusandae enim amet natus commodi nam dolore quidem, deserunt corporis explicabo cumque quod earum ea alias nobis, cupiditate velit odit!</p>
           <div className="mt-10">
             <Link 
               to="/auth" 
